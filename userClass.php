@@ -49,6 +49,15 @@ class User {
     }
 
 
+    
+    public function insert($conn){
+        $st=$conn->prepare("insert into user values(default,?,?,?,?,?,?,?)");
+        $st->execute(array($this->nom,$this->prenom,$this->email,$this->password,$this->telephone));
+        
+       
+    
+       }
+
 
     public function selection_id($conn,$id){
         //requete parametrée

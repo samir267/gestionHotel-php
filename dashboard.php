@@ -287,6 +287,56 @@ while($row=$res->fetch()){
 
 
 
+
+
+
+
+<?php 
+require 'connection.php';
+include 'userClass.php';
+$id=$_GET['id'];
+$user=new user(null,"","","","","");
+
+$user->selection_id($conn,$id);
+
+?>
+<div id="editEmployeeModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form>
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Client</h4>
+          <button type="button" class="close" data-dismiss="modal" 
+		  aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" value="<?php echo $user->nom ?>">
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label>Address</label>
+            <textarea class="form-control" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+          <input type="submit" class="btn btn-info" value="Save">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
   <div class="modal-dialog">

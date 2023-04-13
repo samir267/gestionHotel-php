@@ -1,12 +1,12 @@
 <?php
 require 'connection.php';
 class User {
-    private $id;
-    private $nom;
-    private $prenom;
-    private $email;
-    private $password;
-    private $telephone;
+    public $id;
+    public $nom;
+    public $prenom;
+    public $email;
+    public $password;
+    public $telephone;
 
     public function __construct($id, $nom, $prenom, $email, $password, $telephone) {
         $this->id = $id;
@@ -50,14 +50,10 @@ class User {
 
 
     
-    public function insert($conn){
-        $st=$conn->prepare("insert into user values(default,?,?,?,?,?,?,?)");
-        $st->execute(array($this->nom,$this->prenom,$this->email,$this->password,$this->telephone));
-        
-       
-    
-       }
-
+    public function insert($conn) {
+        $st = $conn->prepare("INSERT INTO user (nom, prenom, email, password, telephone) VALUES (?, ?, ?, ?, ?)");
+        $st->execute(array($this->nom, $this->prenom, $this->email, $this->password, $this->telephone));
+    }
 
     public function selection_id($conn,$id){
         //requete parametrée
@@ -65,10 +61,20 @@ class User {
         $st->execute(array($id));
         $row=$st->fetch();
         $this->nom=$row['nom'];
-
+        $this->prenom=$row['prenom'];
+        $this->email=$row['email'];
+        $this->password=$row['password'];
+        $this->telephone=$row['telephone'];
 }
+
+
+
+public function update ($conn,$id){
+    $st=$conn->prepare("update user set nom=?,prenom=?,email=?,password=?,telephone=? where id=$id");
+    $st->execute(array($this->nom,$this->prenom,$this->email,$this->password,$this->telephone));
 }
    
+}
 
 
 ?>

@@ -3,10 +3,10 @@ $pdo = include 'connection.php';
 
 
 if(isset($_POST['email']) && isset($_POST['password'])){
-    $pswd=$_POST['password'];
+    $pswd=$_POST['email'];
     
   
-    $sql = "SELECT password FROM user WHERE password = '$pswd'";
+    $sql = "SELECT password FROM user WHERE email = '$pswd' ";
     $result = $conn->query($sql);
     
   

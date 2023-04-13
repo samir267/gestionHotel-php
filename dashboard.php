@@ -118,7 +118,7 @@
                             
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" data-toggle="dropdown">
-								<img src="img/test2.jpg" style="width:40px; border-radius:50%;"/>
+								<img src="test2.jpg" style="width:40px; border-radius:50%;"/>
 								<span class="xp-user-live"></span>
 								</a>
 								<ul class="dropdown-menu small-menu">
@@ -186,9 +186,12 @@
       <thead>
         <tr>
           
+          <th>nom</th>
+          <th>prenom</th>
           <th>email</th>
           <th>password</th>
-          
+          <th>telephone</th>
+
         </tr>
       </thead>
       <tbody>
@@ -205,11 +208,14 @@ while($row=$res->fetch()){
 <tr>
           
           <td><?php echo $row["nom"] ?></td>
+          <td><?php echo $row["prenom"] ?></td>
+          <td><?php echo $row["email"] ?></td>
           <td><?php echo $row["password"] ?></td>
-          
+          <td><?php echo $row["telephone"] ?></td>
+
           <td>
 
-          <a href="#editEmployeeModal?id=<?php echo $row['id'] ?>" class="edit" >
+          <a href="editEmployeeModal.php?id=<?php echo $row['id']?>">
 			<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
             <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
 			<i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -251,37 +257,55 @@ while($row=$res->fetch()){
 <div id="addEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div class="modal-header">
           <h4 class="modal-title">Add Client</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control" required>
+            <label>Nom</label>
+            <input type="text" class="form-control" required name="nom">
+          </div>
+          <div class="form-group">
+            <label>Prenom</label>
+            <input type="text" class="form-control" required name="prenom">
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" class="form-control" required>
+            <textarea class="form-control" required name="email"></textarea>
           </div>
           <div class="form-group">
-            <label>Address</label>
-            <textarea class="form-control" required></textarea>
+            <label>Password</label>
+            <textarea class="form-control" required name="password"></textarea>
           </div>
           <div class="form-group">
             <label>Phone</label>
-            <input type="text" class="form-control" required>
+            <input type="text" class="form-control" required name="tel">
           </div>
         </div>
         <div class="modal-footer">
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-success" value="Add">
+          <input type="submit" class="btn btn-success" value="Add" name="add">
         </div>
+        <?php
+$user=new User(null,"","","","","");
+if(isset($_POST['add'])){
+$user->nom=$_POST['nom'];
+$user->prenom=$_POST['prenom'];
+$user->email=$_POST['email'];
+$user->password=$_POST['password'];
+$user->telephone=$_POST['tel'];
+$user->insert($conn);
+}
+
+?>
       </form>
     </div>
   </div>
 </div>
+
+
 <!-- Edit Modal HTML -->
 
 
@@ -289,17 +313,8 @@ while($row=$res->fetch()){
 
 
 
+<!-- 
 
-
-<?php 
-require 'connection.php';
-include 'userClass.php';
-$id=$_GET['id'];
-$user=new user(null,"","","","","");
-
-$user->selection_id($conn,$id);
-
-?>
 <div id="editEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -312,7 +327,7 @@ $user->selection_id($conn,$id);
         <div class="modal-body">
           <div class="form-group">
             <label>Name</label>
-            <input type="text" class="form-control" value="<?php echo $user->nom ?>">
+            <input type="text" class="form-control">
           </div>
           <div class="form-group">
             <label>Email</label>
@@ -335,6 +350,19 @@ $user->selection_id($conn,$id);
     </div>
   </div>
 </div>
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- Delete Modal HTML -->

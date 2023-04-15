@@ -177,8 +177,7 @@
         <div class="col-sm-6 p-0 d-flex justify-content-lg-end justify-content-center">
           <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
 		  <i class="material-icons">&#xE147;</i> <span>Add New Client</span></a>
-          <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal">
-		  <i class="material-icons">&#xE15C;</i> <span>Delete</span></a>
+       
         </div>
       </div>
     </div>
@@ -200,7 +199,7 @@
 <?php
 require 'connection.php';
 include 'userClass.php';
-$user=new User(null,"","","","","");
+$user=new User(null,"","","","","","");
 $res=$user->__selection($conn);
 
 while($row=$res->fetch()){
@@ -214,10 +213,11 @@ while($row=$res->fetch()){
           <td><?php echo $row["telephone"] ?></td>
 
           <td>
-
-          <a href="editEmployeeModal.php?id=<?php echo $row['id']?>">
+ 
+      <a href="#editEmployeeModal" data-id="<?php echo $row['id'] ?>" class="edit" data-toggle="modal">
 			<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-            <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
+      
+            <a href="#deleteEmployeeModal" class="delete" data-id="<?php echo $row['id'] ?>" data-toggle="modal">
 			<i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
           </td>
         </tr>
@@ -257,7 +257,7 @@ while($row=$res->fetch()){
 <div id="addEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+    <form method="post" action="add_client.php">
         <div class="modal-header">
           <h4 class="modal-title">Add Client</h4>
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -288,18 +288,7 @@ while($row=$res->fetch()){
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
           <input type="submit" class="btn btn-success" value="Add" name="add">
         </div>
-        <?php
-$user=new User(null,"","","","","");
-if(isset($_POST['add'])){
-$user->nom=$_POST['nom'];
-$user->prenom=$_POST['prenom'];
-$user->email=$_POST['email'];
-$user->password=$_POST['password'];
-$user->telephone=$_POST['tel'];
-$user->insert($conn);
-}
 
-?>
       </form>
     </div>
   </div>
@@ -309,42 +298,50 @@ $user->insert($conn);
 <!-- Edit Modal HTML -->
 
 
-
-
-
-
-<!-- 
-
 <div id="editEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+
+      <form action="update.php" method="post">
+
         <div class="modal-header">
           <h4 class="modal-title">Edit Client</h4>
           <button type="button" class="close" data-dismiss="modal" 
 		  aria-hidden="true">&times;</button>
         </div>
+        
+
+
+
         <div class="modal-body">
           <div class="form-group">
-            <label>Name</label>
-            <input type="text" class="form-control">
+            <label>Nom</label>
+            <input type="text" class="form-control"  name="nom">
+          </div>
+          <input type="text" class="form-control" name="id" hidden>
+
+          <div class="form-group">
+            <label>Prenom</label>
+            <input type="text" class="form-control" name="prenom">
           </div>
           <div class="form-group">
             <label>Email</label>
-            <input type="email" class="form-control" required>
+            <input type="email" class="form-control" required  name="email">
           </div>
           <div class="form-group">
-            <label>Address</label>
-            <textarea class="form-control" required></textarea>
+            <label>Password</label>
+            <input type="text" class="form-control" required  name="password">
           </div>
           <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" required>
+            <label>Telephone</label>
+            <input type="text" class="form-control" required  name="telephone">
           </div>
+          <input type="hidden"  required  name="role" value="0">
+
         </div>
         <div class="modal-footer">
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-info" value="Save">
+          <input type="submit" class="btn btn-info" name="save" >
         </div>
       </form>
     </div>
@@ -352,7 +349,9 @@ $user->insert($conn);
 </div>
 
 
- -->
+
+
+
 
 
 
@@ -369,7 +368,7 @@ $user->insert($conn);
 <div id="deleteEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form>
+      <form action="delete.php"  method="post">
         <div class="modal-header">
           <h4 class="modal-title">Delete Employee</h4>
           <button type="button" class="close" data-dismiss="modal" 
@@ -380,8 +379,9 @@ $user->insert($conn);
           <p class="text-warning"><small>This action cannot be undone.</small></p>
         </div>
         <div class="modal-footer">
+          <input type="hidden" name="id" >
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-danger" value="Delete">
+          <input type="submit" class="btn btn-danger" value="delete">
         </div>
       </form>
     </div>
@@ -426,6 +426,26 @@ $user->insert($conn);
    <script src="js/jquery-3.3.1.min.js"></script>
   
   
+
+
+<!----------html code compleate----------->
+
+
+
+
+
+
+
+
+  
+     <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.min.js"></script>
+   <script src="js/jquery-3.3.1.min.js"></script>
+  
+  
   <script type="text/javascript">
         
 		$(document).ready(function(){
@@ -439,7 +459,72 @@ $user->insert($conn);
 		   });
 		  
 		});
-		
+// Assuming you have jQuery library loaded
+
+$(document).ready(function() {
+  // Click event handler for the edit link
+  $('a.edit').on('click', function() {
+    // Get the value of data-id attribute for the clicked link
+    var dataId = $(this).data('id');
+    // Send the dataId value to PHP using AJAX
+    $.ajax({
+      url: 'get.php',
+      type: 'Post',
+      data: { dataId: dataId },
+	    beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click
+
+},
+success: function (response) {//once the request successfully process to the server side it will return result here
+                response =JSON.parse(response)
+                console.log("ee",response.id)
+                $("#editEmployeeModal [name=\"email\"]").val(response.email);
+                $("#editEmployeeModal [name=\"prenom\"]").val(response.prenom);
+                $("#editEmployeeModal [name=\"password\"]").val(response.password);
+                $("#editEmployeeModal [name=\"telephone\"]").val(response.telephone);
+                $("#editEmployeeModal [name=\"nom\"]").val(response.nom);
+
+
+                $("#editEmployeeModal [name=\"id\"]").val(response.id);
+
+             
+            },
+      error: function(xhr, status, error) {
+        // Handle any errors that may occur during the AJAX request
+        console.error(error);
+      }
+    });
+  });
+});
+///
+$(document).ready(function() {
+  // Click event handler for the edit link
+  $('a.delete').on('click', function() {
+    // Get the value of data-id attribute for the clicked link
+    var dataId = $(this).data('id');
+    console.log(dataId)
+    // Send the dataId value to PHP using AJAX
+    $.ajax({
+      url: 'get.php',
+      type: 'GET',
+      data: { dataId: dataId },
+	    beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click
+
+},
+success: function (response) {//once the request successfully process to the server side it will return result here
+               response =JSON.parse(response)
+               console.log(response.id)
+                $("#deleteEmployeeModal [name=\"id\"]").val(response.id);
+            },
+      error: function(xhr, status, error) {
+        // Handle any errors that may occur during the AJAX request
+        console.error(error);
+      }
+    });
+  });
+});
+
+
+
 </script>
   
   

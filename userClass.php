@@ -7,15 +7,19 @@ class User {
     public $email;
     public $password;
     public $telephone;
+    public $role;
 
-    public function __construct($id, $nom, $prenom, $email, $password, $telephone) {
+    public function __construct($id = null, $nom = null, $prenom = null, $email = null, $password = null, $telephone = null, $role = null) {
         $this->id = $id;
         $this->nom = $nom;
         $this->prenom = $prenom;
         $this->email = $email;
         $this->password = $password;
         $this->telephone = $telephone;
+        $this->role = $role;
     }
+
+    
 
     public function getId() {
         return $this->id;
@@ -40,6 +44,9 @@ class User {
     public function getTelephone() {
         return $this->telephone;
     }
+    public function getRole() {
+        return $this->role;
+    }
 
     public function __selection($conn){
         $sql = $conn->prepare("SELECT * FROM user");
@@ -52,27 +59,27 @@ class User {
     
     public function insert($conn) {
         $st = $conn->prepare("INSERT INTO user (nom, prenom, email, password, telephone) VALUES (?, ?, ?, ?, ?)");
+        
         $st->execute(array($this->nom, $this->prenom, $this->email, $this->password, $this->telephone));
     }
 
-    public function selection_id($conn,$id){
-        //requete parametrée
-        $st=$conn->prepare("select * from user where id=?");
-        $st->execute(array($id));
-        $row=$st->fetch();
-        $this->nom=$row['nom'];
-        $this->prenom=$row['prenom'];
-        $this->email=$row['email'];
-        $this->password=$row['password'];
-        $this->telephone=$row['telephone'];
-}
+    public function __selectionbyid($conn,$id){
+        $sql = $conn->prepare("SELECT * FROM user where id=$id");
+        $sql->execute();
+        return $sql;
+
+    }
 
 
 
-public function update ($conn,$id){
-    $st=$conn->prepare("update user set nom=?,prenom=?,email=?,password=?,telephone=? where id=$id");
-    $st->execute(array($this->nom,$this->prenom,$this->email,$this->password,$this->telephone));
-}
+    public function update ($conn,$id){
+        $st=$conn->prepare("update user set nom=?,prenom=?,email=?,password=?,telephone=?,role=? where id=$id");
+        $st->execute(array($this->nom,$this->prenom,$this->email,$this->password,$this->telephone,$this->role));
+    }
+    public function delete ($conn,$id){
+        $st=$conn->prepare("delete from user where id=$id");
+        $st->execute();
+    }
    
 }
 

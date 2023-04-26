@@ -7,9 +7,9 @@
 	  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
         <title>crud dashboard</title>
 	    <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="cssdashboard\css/bootstrap.min.css">
+        <link rel="stylesheet" href="../cssdashboard\css/bootstrap.min.css">
 	    <!----css3---->
-        <link rel="stylesheet" href="cssdashboard\css/custom.css">
+        <link rel="stylesheet" href="../cssdashboard\css/custom.css">
 		
 		
 		<!--google fonts -->
@@ -35,15 +35,15 @@
 		     <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3><img src="cssdashboard\img/logo.png" class="img-fluid"/><span>Admin Panel</span></h3>
+                <h3><img src="img/logo.png" class="img-fluid"/><span>Admin Panel</span></h3>
             </div>
             <ul class="list-unstyled components">
-			<li  class="active">
-                    <a href="dashboard.php" class="dashboard"><i class="material-icons">dashboard</i>
+			<li  >
+                    <a href="../dashboard.php" class="dashboard"><i class="material-icons">dashboard</i>
 					<span>Hoteliers</span></a>
                 </li>
-                <li  class="">
-                    <a href="CrudClient\List.php" class="dashboard"><i class="material-icons">dashboard</i>
+                <li  class="active">
+                    <a href="" class="dashboard"><i class="material-icons">dashboard</i>
 					<span>Clients</span></a>
                 </li>
             </ul>
@@ -118,7 +118,7 @@
                             
                             <li class="nav-item dropdown">
                                 <a class="nav-link" href="#" data-toggle="dropdown">
-								<img src="cssdashboard\img/test3.jpg" style="width:40px; border-radius:50%;"/>
+								<img src="../cssdashboard\img/test3.jpg" style="width:40px; border-radius:50%;"/>
 								<span class="xp-user-live"></span>
 								</a>
 								<ul class="dropdown-menu small-menu">
@@ -172,13 +172,9 @@
     <div class="table-title">
       <div class="row">
         <div class="col-sm-6 p-0 d-flex justify-content-lg-start justify-content-center">
-          <h2 class="ml-lg-2">Gerer Hoteliers</h2>
+          <h2 class="ml-lg-2">Gerer Clients</h2>
         </div>
-        <div class="col-sm-6 p-0 d-flex justify-content-lg-end justify-content-center">
-          <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal">
-		  <i class="material-icons">&#xE147;</i> <span>Ajouter Hotelier</span></a>
-       
-        </div>
+        
       </div>
     </div>
     <table class="table table-striped table-hover">
@@ -197,10 +193,10 @@
         
          
 <?php
-require 'connection.php';
-include 'User.php';
+require '../connection.php';
+include '../User.php';
 $user=new User(null,"","","","","","");
-$res=$user->__selection($conn);
+$res=$user->__selectionClient($conn);
 
 while($row=$res->fetch()){
   ?>
@@ -214,8 +210,7 @@ while($row=$res->fetch()){
 
           <td>
  
-      <a href="#editEmployeeModal" data-id="<?php echo $row['id'] ?>" class="edit" data-toggle="modal">
-			<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+     
       
             <a href="#deleteEmployeeModal" class="delete" data-id="<?php echo $row['id'] ?>" data-toggle="modal">
 			<i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -252,106 +247,12 @@ while($row=$res->fetch()){
     </div>
   </div>
 </div>
-<!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-    <form method="post" action="CrudHotelier/add.php">
-        <div class="modal-header">
-          <h4 class="modal-title">Ajouter Hotelier</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Nom</label>
-            <input type="text" class="form-control" required name="nom">
-          </div>
-          <div class="form-group">
-            <label>Prenom</label>
-            <input type="text" class="form-control" required name="prenom">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" required name="email">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password"  class="form-control" required name="password">
-          </div>
-          <div class="form-group">
-            <label>Phone</label>
-            <input type="text" class="form-control" required name="tel">
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-success" value="Add" name="add">
-        </div>
 
-      </form>
-    </div>
-  </div>
-</div>
-
-
-<!-- Edit Modal HTML -->
-
-
-<div id="editEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
-    <div class="modal-content">
-
-      <form action="CrudHotelier/update.php" method="post">
-
-        <div class="modal-header">
-          <h4 class="modal-title">Modifier Hotelier</h4>
-          <button type="button" class="close" data-dismiss="modal" 
-		  aria-hidden="true">&times;</button>
-        </div>
         
 
 
 
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Nom</label>
-            <input type="text" class="form-control"  name="nom">
-          </div>
-          <input type="text" class="form-control" name="id" hidden>
-
-          <div class="form-group">
-            <label>Prenom</label>
-            <input type="text" class="form-control" name="prenom">
-          </div>
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" required  name="email">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="text" class="form-control" required  name="password">
-          </div>
-          <div class="form-group">
-            <label>Telephone</label>
-            <input type="text" class="form-control" required  name="telephone">
-          </div>
-          <input type="hidden"  required  name="role" value="0">
-
-        </div>
-        <div class="modal-footer">
-          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-info" name="save" >
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
+  
 
 
 
@@ -367,14 +268,14 @@ while($row=$res->fetch()){
 <div id="deleteEmployeeModal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="CrudHotelier\delete.php"  method="post">
+      <form action="delete.php"  method="post">
         <div class="modal-header">
-          <h4 class="modal-title">Supprimer Hotelier</h4>
+          <h4 class="modal-title">Supprimer Client</h4>
           <button type="button" class="close" data-dismiss="modal" 
 		  aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
-          <p>Êtes-vous sûr de vouloir supprimer cet hôtelier ?</p>
+          <p>Êtes-vous sûr de vouloir supprimer cet Client ?</p>
         </div>
         <div class="modal-footer">
           <input type="hidden" name="id" >
@@ -414,14 +315,13 @@ while($row=$res->fetch()){
 
 
 
-
   
      <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="js/jquery-3.3.1.slim.min.js"></script>
-   <script src="js/popper.min.js"></script>
-   <script src="js/bootstrap.min.js"></script>
-   <script src="js/jquery-3.3.1.min.js"></script>
+   <script src="../js/jquery-3.3.1.slim.min.js"></script>
+   <script src="../js/popper.min.js"></script>
+   <script src="../js/bootstrap.min.js"></script>
+   <script src="../js/jquery-3.3.1.min.js"></script>
   
   
 
@@ -459,39 +359,7 @@ while($row=$res->fetch()){
 		});
 // Assuming you have jQuery library loaded
 
-$(document).ready(function() {
-  // Click event handler for the edit link
-  $('a.edit').on('click', function() {
-    // Get the value of data-id attribute for the clicked link
-    var dataId = $(this).data('id');
-    // Send the dataId value to PHP using AJAX
-    $.ajax({
-      url: 'CrudHotelier/get.php',
-      type: 'Post',
-      data: { dataId: dataId },
-	    beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click
 
-},
-success: function (response) {//once the request successfully process to the server side it will return result here
-                response =JSON.parse(response)
-                $("#editEmployeeModal [name=\"email\"]").val(response.email);
-                $("#editEmployeeModal [name=\"prenom\"]").val(response.prenom);
-                $("#editEmployeeModal [name=\"password\"]").val(response.password);
-                $("#editEmployeeModal [name=\"telephone\"]").val(response.telephone);
-                $("#editEmployeeModal [name=\"nom\"]").val(response.nom);
-
-
-                $("#editEmployeeModal [name=\"id\"]").val(response.id);
-
-             
-            },
-      error: function(xhr, status, error) {
-        // Handle any errors that may occur during the AJAX request
-        console.error(error);
-      }
-    });
-  });
-});
 ///
 $(document).ready(function() {
   // Click event handler for the edit link
@@ -501,7 +369,7 @@ $(document).ready(function() {
     console.log(dataId)
     // Send the dataId value to PHP using AJAX
     $.ajax({
-      url: 'CrudHotelier/get.php',
+      url: 'CrudClient/get.php',
       type: 'GET',
       data: { dataId: dataId },
 	    beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click

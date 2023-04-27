@@ -35,16 +35,16 @@
 		     <!-- Sidebar  -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3><img src="img/logo.png" class="img-fluid"/><span>Admin Panel</span></h3>
+                <h3><img src="../cssdashboard\img/logo.png" class="img-fluid"/><span>Hotelier Panel</span></h3>
             </div>
             <ul class="list-unstyled components">
-			<li  >
-                    <a href="../dashboard.php" class="dashboard"><i class="material-icons">dashboard</i>
-					<span>Hoteliers</span></a>
+			<li  class="active">
+                    <a href="dashboard.php" class="dashboard"><i class="material-icons">dashboard</i>
+					<span>Chambres</span></a>
                 </li>
-                <li  class="active">
-                    <a href="" class="dashboard"><i class="material-icons">dashboard</i>
-					<span>Clients</span></a>
+                <li  class="">
+                    <a href="facture.php" class="dashboard"><i class="material-icons">dashboard</i>
+					<span>Factures</span></a>
                 </li>
             </ul>
 		
@@ -136,7 +136,7 @@
                                                     </span>Settings</a>
                                     </li>
                                     <li>
-                                        <a href="#"><span class="material-icons">
+                                        <a href="logout.php"><span class="material-icons">
                                                     logout</span>Logout</a>
                                     </li>
                                 </ul>
@@ -172,7 +172,7 @@
     <div class="table-title">
       <div class="row">
         <div class="col-sm-6 p-0 d-flex justify-content-lg-start justify-content-center">
-          <h2 class="ml-lg-2">Gerer Clients</h2>
+          <h2 class="ml-lg-2">Gerer Chambres</h2>
         </div>
         
       </div>
@@ -181,11 +181,10 @@
       <thead>
         <tr>
           
-          <th>nom</th>
-          <th>prenom</th>
-          <th>email</th>
-          <th>password</th>
-          <th>telephone</th>
+          <th>prix</th>
+          <th>categorie</th>
+          <th>etat</th>
+          <th>nb_personne</th>
 
         </tr>
       </thead>
@@ -194,26 +193,25 @@
          
 <?php
 require '../connection.php';
-include '../User.php';
-$user=new User(null,"","","","","","");
-$res=$user->__selectionClient($conn);
+include 'chambre.php';
+$chambre=new chambre(null,"","","","");
+$res=$chambre->__selection($conn);
 
 while($row=$res->fetch()){
   ?>
 <tr>
           
-          <td><?php echo $row["nom"] ?></td>
-          <td><?php echo $row["prenom"] ?></td>
-          <td><?php echo $row["email"] ?></td>
-          <td><?php echo $row["password"] ?></td>
-          <td><?php echo $row["telephone"] ?></td>
+          <td><?php echo $row["prix"] ?></td>
+          <td><?php echo $row["categorie"] ?></td>
+          <td><?php if( $row["etat"]==0)echo "libre";
+                    else if ($row["etat"]==1)echo "réservé" ?></td>
+          <td><?php echo $row["nbr_personne"] ?></td>
 
           <td>
  
-     
+      <a href="#editChambreModal" data-id="<?php echo $row['id'] ?>" class="edit" data-toggle="modal">
+			<i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
       
-            <a href="#deleteEmployeeModal" class="delete" data-id="<?php echo $row['id'] ?>" data-toggle="modal">
-			<i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
           </td>
         </tr>
 <?php
@@ -248,44 +246,50 @@ while($row=$res->fetch()){
   </div>
 </div>
 
-        
+
+<!-- Edit Modal HTML -->
 
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-<!-- Delete Modal HTML -->
-<div id="deleteEmployeeModal" class="modal fade">
-  <div class="modal-dialog">
+<div id="editChambreModal" class="modal fade">
+<div class="modal-dialog">
     <div class="modal-content">
-      <form action="delete.php"  method="post">
+      <form action="updateChambre.php"  method="post">
+        
         <div class="modal-header">
-          <h4 class="modal-title">Supprimer Client</h4>
+          <h4 class="modal-title">Modifier etat chambre</h4>
           <button type="button" class="close" data-dismiss="modal" 
 		  aria-hidden="true">&times;</button>
         </div>
         <div class="modal-body">
-          <p>Êtes-vous sûr de vouloir supprimer cet Client ?</p>
+          <p>Êtes-vous sûr de liberer cette chambre ?</p>
         </div>
         <div class="modal-footer">
           <input type="hidden" name="id" >
           <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-          <input type="submit" class="btn btn-danger" value="delete">
+          <input type="submit" class="btn btn-info" value="save">
         </div>
       </form>
     </div>
 	</div>
-  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				
 		   
 			  </div>
@@ -315,13 +319,14 @@ while($row=$res->fetch()){
 
 
 
+
   
      <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-   <script src="../js/jquery-3.3.1.slim.min.js"></script>
-   <script src="../js/popper.min.js"></script>
-   <script src="../js/bootstrap.min.js"></script>
-   <script src="../js/jquery-3.3.1.min.js"></script>
+   <script src="../cssdashboard\js/jquery-3.3.1.slim.min.js"></script>
+   <script src="../cssdashboard\js/popper.min.js"></script>
+   <script src="../cssdashboard\js/bootstrap.min.js"></script>
+   <script src="../cssdashboard\js/jquery-3.3.1.min.js"></script>
   
   
 
@@ -359,26 +364,25 @@ while($row=$res->fetch()){
 		});
 // Assuming you have jQuery library loaded
 
-
-///
 $(document).ready(function() {
   // Click event handler for the edit link
-  $('a.delete').on('click', function() {
+  $('a.edit').on('click', function() {
     // Get the value of data-id attribute for the clicked link
     var dataId = $(this).data('id');
-    console.log(dataId)
     // Send the dataId value to PHP using AJAX
     $.ajax({
-      url: 'CrudClient\get.php',
-      type: 'GET',
+      url: 'getChambre.php',
+      type: 'Post',
       data: { dataId: dataId },
 	    beforeSend: function () {//We add this before send to disable the button once we submit it so that we prevent the multiple click
 
 },
 success: function (response) {//once the request successfully process to the server side it will return result here
-               response =JSON.parse(response)
-               console.log(response.id)
-                $("#deleteEmployeeModal [name=\"id\"]").val(response.id);
+                response =JSON.parse(response)       
+                console.log(response)        
+                $("#editChambreModal [name=\"id\"]").val(response);
+
+             
             },
       error: function(xhr, status, error) {
         // Handle any errors that may occur during the AJAX request
@@ -387,6 +391,7 @@ success: function (response) {//once the request successfully process to the ser
     });
   });
 });
+///
 
 
 

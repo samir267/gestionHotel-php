@@ -4,8 +4,8 @@
 
   $user=new User();
   $id=$_POST["id"];
-  $user->delete($conn,$id);
-  header("Location: ../dashboard.php");
+  $user->delete($conn,134);
+  header("Location: List.php");
 
   
       
